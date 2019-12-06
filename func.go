@@ -14,6 +14,7 @@ type FunctionDb struct {
 	Compute		ComputeDb		`bson:"compute"`
 	Limits		FuncLimitsDb		`bson:"limits"`
 	Env		[]*EnvValDb		`bson:"env"`
+	Targets		map[string]*FnTargetDb	`bson:"chain_targets"`
 
 	Gen		int			`bson:"gen"`
 }
@@ -26,6 +27,11 @@ func (f *FunctionDb)UpdateEnvQ() bson.M {
 func (f *FunctionDb)UpdateLimQ() bson.M {
 	/* .Limits */
 	return bson.M{"limits": &f.Limits, "gen": f.Gen}
+}
+
+func (f *FunctionDb)UpdateTargetsQ() bson.M {
+	/* .Targets */
+	return bson.M{"chain_targets": f.Targets, "gen": f.Gen}
 }
 
 func (f *FunctionDb)ID() bson.ObjectId { return f.Id }
@@ -79,4 +85,8 @@ func (f *FunctionDb)LogKey() string {
 
 func (f *FunctionDb)FnId() string {
 	return f.Id.Hex()
+}
+
+type FnTargetDb struct {
+	Id		bson.ObjectId		`bson:"id"`
 }
