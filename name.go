@@ -32,14 +32,14 @@ func ValidName(n string) bool {
 	return nameRe.MatchString(n)
 }
 
-func (n *Name)Fill(projectRef, name string) error {
+func (n *Name)Fill(projectRef, name, extra string) error {
 	if !ValidName(name) {
 		return errors.New("bad name value")
 	}
 
 	n.Name = name
 	n.ProjectRef = projectRef
-	n.Cookie = util.Sha256(n.Str())
+	n.Cookie = util.Sha256(n.Str() + "::" + extra)
 
 	return nil
 }
@@ -48,7 +48,8 @@ func (n *Name)Str() string {
 	return n.ProjectRef + "::" + n.Name
 }
 
-func (n *Name)Q(q bson.M) bson.M {
+func (n *Name)Q() bson.M {
+	q := Q()
 	q["cookie"] = n.Cookie
 	return q
 }
