@@ -32,24 +32,16 @@ func ValidName(n string) bool {
 	return nameRe.MatchString(n)
 }
 
-func (n *Name)New(projectRef, name string) error {
+func (n *Name)Fill(projectRef, name string) error {
 	if !ValidName(name) {
 		return errors.New("bad name value")
 	}
 
-	n.Make(projectRef, name)
+	n.Name = name
+	n.ProjectRef = projectRef
+	n.Cookie = util.Sha256(n.Str())
+
 	return nil
-}
-
-func (n *Name)Make(project, name string) *Name {
-	fill(n, project, name)
-	return n
-}
-
-func fill(into *Name, project, name string) {
-	into.Name = name
-	into.ProjectRef = project
-	into.Cookie = util.Sha256(into.Str())
 }
 
 func (n *Name)Str() string {
