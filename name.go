@@ -12,7 +12,7 @@ type Name struct {
 	ProjectRef	string		`bson:"project"`
 	/*
 	 * Search by name (a.k.a. lookup) uses this field.
-	 * It must be indexed
+	 * Field is indexed in setupIndexes
 	 */
 	Cookie		string		`bson:"cookie"`
 }

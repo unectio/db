@@ -6,6 +6,7 @@ import (
 	"github.com/unectio/util"
 	"github.com/unectio/util/mongo"
 	"github.com/unectio/util/restmux"
+	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 	sc "github.com/unectio/util/context"
 )
@@ -74,10 +75,39 @@ func col(ctx context.Context, loc *mongo.Location) mongo.Collection {
 func InitRealMongo(ctx context.Context, url string) error {
 	s, err := mongo.Connect(url)
 	if err == nil {
+		err = setupIndexes(s)
 		defer s.Close()
 		sc.SetDB(ctx, s)
 	}
 	return err
+}
+
+func setupIndexes(s mongo.Session) error {
+	var err error
+
+	err = setupCookieIndex(s, LocFunc)	;if err != nil { return err }
+	err = setupCookieIndex(s, LocTrigger)	;if err != nil { return err }
+	err = setupCookieIndex(s, LocCode)	;if err != nil { return err }
+	err = setupCookieIndex(s, LocRepo)	;if err != nil { return err }
+	err = setupCookieIndex(s, LocRouter)	;if err != nil { return err }
+	err = setupCookieIndex(s, LocAuthCtx)	;if err != nil { return err }
+	err = setupCookieIndex(s, LocApps)	;if err != nil { return err }
+	err = setupCookieIndex(s, LocSecret)	;if err != nil { return err }
+	err = setupCookieIndex(s, LocWebsock)	;if err != nil { return err }
+	err = setupCookieIndex(s, LocMongo)	;if err != nil { return err }
+
+	return nil
+}
+
+func setupCookieIndex(s mongo.Session, loc *mongo.Location) error {
+	index := mgo.Index {
+		Unique:		true,
+		Background:	true,
+		Sparse:		true,
+		Key:		[]string{ "cookie" },
+	}
+
+	return s.Collection(loc).EnsureIndex(&index)
 }
 
 func Q() bson.M { return bson.M{} }
