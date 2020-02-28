@@ -24,17 +24,25 @@ const (
 
 var nameRe = regexp.MustCompile("^[\\p{L}\\d_]+(.[\\p{L}\\d_]+)*$")
 
-func ValidName(n string) bool {
-	if len(n) == 0 || len(n) >= NameLenMax {
-		return false
+func ValidName(n string) error {
+	if len(n) == 0 {
+		return errors.New("empty")
+	}
+	if len(n) >= NameLenMax {
+		return errors.New("too long")
 	}
 
-	return nameRe.MatchString(n)
+	if !nameRe.MatchString(n) {
+		return errors.New("invalid symbols")
+	}
+
+	return nil
 }
 
 func (n *Name)Fill(projectRef, name, extra string) error {
-	if !ValidName(name) {
-		return errors.New("bad name value")
+	err := ValidName(name)
+	if err != nil {
+		return errors.New("bad name value: " + err.Error())
 	}
 
 	n.Name = name
