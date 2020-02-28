@@ -42,6 +42,7 @@ type FuncCodeDb struct {
 	Repo		*FuncRepoLink		`bson:"repo_link,omitempty"`
 
 	Gen		int			`bson:"gen"`
+	Weight		int			`bson:"weight"`
 
 	/*
 	 * Key for lookup (deployment -> *code).
@@ -77,6 +78,6 @@ type FuncRepoLink struct {
 
 
 func (c *FuncCodeDb)UpdateQ() bson.M {
-	/* .Repo & .Gen */
-	return bson.M{"repo_link": c.Repo, "gen": c.Gen}
+	/* .Repo & .Gen & .Weight */
+	return bson.M{"repo_link": c.Repo, "gen": c.Gen, "weight": c.Weight}
 }
