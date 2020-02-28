@@ -42,6 +42,7 @@ type FunctionDb struct {
 	Limits		FuncLimitsDb		`bson:"limits"`
 	Env		[]*EnvValDb		`bson:"env"`
 	Targets		map[string]*FnTargetDb	`bson:"chain_targets"`
+	CodeBalancer	string			`bson:"code_balancer"`
 
 	Gen		int			`bson:"gen"`
 }
