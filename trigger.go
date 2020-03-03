@@ -41,7 +41,7 @@ type TriggerDb struct {
 
 	/*
 	 * Search key by which event locates the trigger.
-	 * XXX This field must be indexed.
+	 * This field is indexed.
 	 */
 	SearchKey	string			`bson:"key"`
 	/*
