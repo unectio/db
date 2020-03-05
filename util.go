@@ -87,13 +87,16 @@ func Add(ctx context.Context, o DbObject) error {
 }
 
 func RestError(err error) restmux.Error {
-	if mongo.IsNotFound(err) {
+	if err == nil {
+		sc.Log("DB").Errorf("DB error tries to report nil")
+		return &restmux.GenError{http.StatusInternalServerError, "Error reporting error %) sorry"}
+	} else if mongo.IsNotFound(err) {
 		return &restmux.GenError{http.StatusNotFound, "No such object"}
 	} else if mongo.IsDup(err) {
 		return &restmux.GenError{http.StatusConflict, "Name already exists"}
 	} else {
 		sc.Log("DB").Errorf("DB connection (or query) error at %s: %s", util.Caller(), err.Error())
-		return &restmux.GenError{http.StatusInternalServerError, "Error looking up object"}
+		return &restmux.GenError{http.StatusInternalServerError, "Error querying database"}
 	}
 }
 
