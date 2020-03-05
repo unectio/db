@@ -28,8 +28,8 @@
 package db
 
 import (
-	"regexp"
 	"errors"
+	"unicode"
 	"github.com/unectio/util"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -49,8 +49,6 @@ const (
 	SharedProject		string = "*"
 )
 
-var nameRe = regexp.MustCompile("^[\\p{L}\\d_]+(.[\\p{L}\\d_]+)*$")
-
 func ValidName(n string) error {
 	if len(n) == 0 {
 		return errors.New("empty")
@@ -59,8 +57,18 @@ func ValidName(n string) error {
 		return errors.New("too long")
 	}
 
-	if !nameRe.MatchString(n) {
-		return errors.New("invalid symbols")
+	/*
+	 * Name must contain letters, digits, _-s and .-s, but . cannot
+	 * be the first or last character. No regex as / is treated as
+	 * unicode.L by it.
+	 */
+	for i, l := range n {
+		if !((l == '.' && i != 0 && i != len(n) - 1) ||
+				unicode.Is(unicode.Letter, l) ||
+				unicode.Is(unicode.Digit, l) ||
+				l == '_') {
+			return errors.New("Invalid character in name")
+		}
 	}
 
 	return nil

@@ -10,6 +10,7 @@
 package main
 
 import (
+	"fmt"
 	"testing"
 	"github.com/unectio/db"
 )
@@ -17,12 +18,15 @@ import (
 var valid = []string {
 	"a_1z",
 	"аео", /* %) */
-	"お_尻",
 	"_abc",
-	"1abc",
+	"0abc",
+	"お_尻",
+	"функ_ция",
 }
 
 var invalid = []string {
+	"a-f",
+	"a/f",
 	"$abc",
 	" abc",
 	".abc",
@@ -32,13 +36,15 @@ var invalid = []string {
 func TestNameValid(t *testing.T) {
 	for _, n := range valid {
 		if db.ValidName(n) != nil {
-			t.Fatalf("Invalid [%s]", n)
+			fmt.Printf("Invalid [%s]\n", n)
+			t.Fail()
 		}
 	}
 
 	for _, n := range invalid {
 		if db.ValidName(n) == nil {
-			t.Fatalf("Valid [%s]", n)
+			fmt.Printf("Valid [%s]\n", n)
+			t.Fail()
 		}
 	}
 }
