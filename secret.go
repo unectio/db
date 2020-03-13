@@ -40,6 +40,8 @@ type SecretDb struct {
 
 	KeyId		bson.ObjectId		`bson:"keyid"`
 	Data		[]byte			`bson:"data"`
+
+	Reveal		map[string]string	`bson:"reveal"`
 }
 
 func (s *SecretDb)ID() bson.ObjectId { return s.Id }
@@ -50,7 +52,7 @@ func (s *SecretDb)PayloadUpdReq() bson.M {
 	return bson.M{"keyid": s.KeyId, "data": s.Data}
 }
 
-func (s *SecretDb)Save(ctx context.Context, pl map[string]string) error {
+func (s *SecretDb)SavePayload(ctx context.Context, pl map[string]string) error {
 	data, err := json.Marshal(pl)
 	if err != nil {
 		return err
@@ -74,7 +76,7 @@ func (s *SecretDb)Save(ctx context.Context, pl map[string]string) error {
 	return nil
 }
 
-func (s *SecretDb)Load(ctx context.Context) (map[string]string, error) {
+func (s *SecretDb)LoadPayload(ctx context.Context) (map[string]string, error) {
 	var key KeyDb
 
 	err := Load(ctx, s.KeyId, &key)
