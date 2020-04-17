@@ -128,18 +128,18 @@ func setupIndexes(s mongo.Session) error {
 	err = setupCookieIndex(s, LocWebsock)	;if err != nil { return err }
 	err = setupCookieIndex(s, LocMongo)	;if err != nil { return err }
 
-	err = setupFieldIndex(s, LocTrigger, "key");	if err != nil { return err }
+	err = setupFieldIndex(s, LocTrigger, "key", false); if err != nil { return err }
 
 	return nil
 }
 
 func setupCookieIndex(s mongo.Session, loc *mongo.Location) error {
-	return setupFieldIndex(s, loc, "cookie")
+	return setupFieldIndex(s, loc, "cookie", true)
 }
 
-func setupFieldIndex(s mongo.Session, loc *mongo.Location, field string) error {
+func setupFieldIndex(s mongo.Session, loc *mongo.Location, field string, unique bool) error {
 	index := mgo.Index {
-		Unique:		true,
+		Unique:		unique,
 		Background:	true,
 		Sparse:		true,
 		Key:		[]string{ field },
