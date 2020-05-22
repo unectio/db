@@ -36,6 +36,7 @@ const (
 	StateDB string		= "faas_state"
 	FuncCol string		= "Functions"
 	TriggerCol string	= "Triggers"
+	TargetsCol string	= "Targets"
 	CodeCol string		= "Codes"
 	RepoCol string		= "Repositories"
 	RouterCol string	= "Routers"
@@ -65,6 +66,7 @@ const (
 var (
 	LocFunc		= &mongo.Location{StateDB, FuncCol}
 	LocTrigger	= &mongo.Location{StateDB, TriggerCol}
+	LocTarget	= &mongo.Location{StateDB, TargetsCol}
 	LocCode		= &mongo.Location{StateDB, CodeCol}
 	LocRepo		= &mongo.Location{StateDB, RepoCol}
 	LocRouter	= &mongo.Location{StateDB, RouterCol}

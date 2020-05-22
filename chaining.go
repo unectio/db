@@ -28,83 +28,36 @@
 package db
 
 import (
-	"time"
 	"github.com/unectio/util/mongo"
 	"gopkg.in/mgo.v2/bson"
 )
 
-type FunctionDb struct {
+type FnTargetDb struct {
 	DbCommon				`bson:",inline"`
 
-	State		string			`bson:"state"`
+	FnId		bson.ObjectId		`bson:"fnid"`
+	Fn		*NextFunctionDb		`bson:"function,omitempty"`
+	Rest		*NextRestDb		`bson:"rest,omitempty"`
+	Mware		*NextMwareDb		`bson:"mware,omitempty"`
 
-	Compute		ComputeDb		`bson:"compute"`
-	Limits		FuncLimitsDb		`bson:"limits"`
-	Env		[]*EnvValDb		`bson:"env"`
-	CodeBalancer	string			`bson:"code_balancer"`
-
-	Gen		int			`bson:"gen"`
+	SuccFn		bson.ObjectId		`bson:"on_success"`
+	FailFn		bson.ObjectId		`bson:"on_failure"`
 }
 
-func (f *FunctionDb)UpdateEnvQ() bson.M {
-	/* .Env */
-	return bson.M{"env": f.Env, "gen": f.Gen}
+func (tg *FnTargetDb)ByFn(fnid bson.ObjectId) bson.M {
+	/* .FnId */
+	return bson.M{"fnid": fnid}
 }
 
-func (f *FunctionDb)UpdateLimQ() bson.M {
-	/* .Limits */
-	return bson.M{"limits": &f.Limits, "gen": f.Gen}
+func (tg *FnTargetDb)ID() bson.ObjectId { return tg.Id }
+func (tg *FnTargetDb)Location() *mongo.Location { return LocTarget }
+
+type NextFunctionDb struct {
+	FnId		bson.ObjectId
 }
 
-func (f *FunctionDb)ID() bson.ObjectId { return f.Id }
-func (f *FunctionDb)Location() *mongo.Location { return LocFunc }
-
-type EnvValDb struct {
-	Name		string			`bson:"name"`
-	Value		string			`bson:"value"`
-
-	/*
-	 * This is the resolved reference, which is not to be
-	 * kept in DB.
-	 */
-	resolved	string			`bson:"-"`
+type NextRestDb struct {
 }
 
-func (ev *EnvValDb)Resolve(v string) {
-	ev.resolved = v
-}
-
-func (ev *EnvValDb)RealValue() string {
-	if ev.resolved != "" {
-		return ev.resolved
-	} else {
-		return ev.Value
-	}
-}
-
-type FuncLimitsDb struct {
-	TmoMsec		int			`bson:"tmo_msec"`
-	Burst		int			`bson:"burst"`
-	Rate		int			`bson:"rate"`
-	Class		string			`bson:"class"`
-}
-
-func (l *FuncLimitsDb)Timeout() time.Duration {
-	return time.Duration(l.TmoMsec) * time.Millisecond
-}
-
-func (l *FuncLimitsDb)RL() (uint, uint) {
-	return uint(l.Rate), uint(l.Burst)
-}
-
-func FnLogKey(fnid bson.ObjectId) string {
-	return "fn." + fnid.Hex()
-}
-
-func (f *FunctionDb)LogKey() string {
-	return FnLogKey(f.Id)
-}
-
-func (f *FunctionDb)FnId() string {
-	return f.Id.Hex()
+type NextMwareDb struct {
 }
