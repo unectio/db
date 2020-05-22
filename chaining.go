@@ -53,10 +53,11 @@ func (tg *FnTargetDb)ID() bson.ObjectId { return tg.Id }
 func (tg *FnTargetDb)Location() *mongo.Location { return LocTarget }
 
 type NextFunctionDb struct {
-	FnId		bson.ObjectId
+	FnId		bson.ObjectId		`bson:"fnid"`
 }
 
 type NextRestDb struct {
+	URL		string			`bson:"url"`
 }
 
 type NextMwareDb struct {
