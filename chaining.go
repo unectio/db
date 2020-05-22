@@ -61,4 +61,6 @@ type NextRestDb struct {
 }
 
 type NextMwareDb struct {
+	MwType		string			`bson:"type"`
+	MwId		bson.ObjectId		`bson:"id"`
 }
