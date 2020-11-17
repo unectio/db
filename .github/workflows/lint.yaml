@@ -11,9 +11,6 @@ jobs:
       with:
         go-version: 1.15
       id: go
-      run: |
-        go version
-        go env
 
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
@@ -28,6 +25,8 @@ jobs:
 
     - name: Check Go modules and vendoring
       run: |
+        go version
+        go env
         go mod tidy -v
         go mod download
 
