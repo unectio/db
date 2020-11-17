@@ -23,15 +23,11 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-go-
 
-    - name: Check Go modules and vendoring
+    - name: Install dependencies
       run: |
-        go version
-        go env
-        go mod tidy -v
         go mod download
-
-    - name: Install test dependencies
-      run: make install-test
+        ls -lisa $GOPATH/bin
+        make install-test
 
     - name: Check the code
       run: make lint
