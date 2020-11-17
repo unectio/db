@@ -29,30 +29,31 @@ package db
 
 import (
 	"context"
-	"github.com/unectio/util"
 	"encoding/json"
+
+	"github.com/unectio/util"
 	"github.com/unectio/util/mongo"
 	"gopkg.in/mgo.v2/bson"
 )
 
 type SecretDb struct {
-	DbCommon				`bson:",inline"`
+	DbCommon `bson:",inline"`
 
-	KeyId		bson.ObjectId		`bson:"keyid"`
-	Data		[]byte			`bson:"data"`
+	KeyId bson.ObjectId `bson:"keyid"`
+	Data  []byte        `bson:"data"`
 
-	Reveal		map[string]string	`bson:"reveal"`
+	Reveal map[string]string `bson:"reveal"`
 }
 
-func (s *SecretDb)ID() bson.ObjectId { return s.Id }
-func (s *SecretDb)Location() *mongo.Location { return LocSecret }
+func (s *SecretDb) ID() bson.ObjectId         { return s.Id }
+func (s *SecretDb) Location() *mongo.Location { return LocSecret }
 
-func (s *SecretDb)PayloadUpdReq() bson.M {
+func (s *SecretDb) PayloadUpdReq() bson.M {
 	/* .KeyId and .Data */
 	return bson.M{"keyid": s.KeyId, "data": s.Data}
 }
 
-func (s *SecretDb)SavePayload(ctx context.Context, pl map[string]string) error {
+func (s *SecretDb) SavePayload(ctx context.Context, pl map[string]string) error {
 	data, err := json.Marshal(pl)
 	if err != nil {
 		return err
@@ -76,7 +77,7 @@ func (s *SecretDb)SavePayload(ctx context.Context, pl map[string]string) error {
 	return nil
 }
 
-func (s *SecretDb)LoadPayload(ctx context.Context) (map[string]string, error) {
+func (s *SecretDb) LoadPayload(ctx context.Context) (map[string]string, error) {
 	var key KeyDb
 
 	err := Load(ctx, s.KeyId, &key)
@@ -97,4 +98,3 @@ func (s *SecretDb)LoadPayload(ctx context.Context) (map[string]string, error) {
 
 	return kv, nil
 }
-

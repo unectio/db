@@ -33,17 +33,17 @@ import (
 )
 
 type MongoDb struct {
-	DbCommon				`bson:",inline"`
+	DbCommon `bson:",inline"`
 
-	State		string			`bson:"state"`
-	Tier		string			`bson:"tier"`
+	State string `bson:"state"`
+	Tier  string `bson:"tier"`
 
-	Creds		*SimpleMwareCredsDb	`bson:"creds"`
-	Instance	bson.ObjectId		`bson:"instance"`
+	Creds    *SimpleMwareCredsDb `bson:"creds"`
+	Instance bson.ObjectId       `bson:"instance"`
 }
 
-func (o *MongoDb)ID() bson.ObjectId { return o.Id }
-func (o *MongoDb)Location() *mongo.Location { return LocMongo }
+func (o *MongoDb) ID() bson.ObjectId         { return o.Id }
+func (o *MongoDb) Location() *mongo.Location { return LocMongo }
 
 func MgoInstanceQ(tier string) bson.M {
 	/* MwareServiceDb.Type & MwareServiceDb.Mgo.Tier */
@@ -51,7 +51,7 @@ func MgoInstanceQ(tier string) bson.M {
 }
 
 type MongoServiceDb struct {
-	Tier		string			`bson:"tier"`
+	Tier string `bson:"tier"`
 
-	Admin		*SimpleMwareCredsDb	`bson:"admin_creds"`
+	Admin *SimpleMwareCredsDb `bson:"admin_creds"`
 }

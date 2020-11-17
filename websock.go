@@ -33,21 +33,21 @@ import (
 )
 
 type WebsockDb struct {
-	DbCommon				`bson:",inline"`
+	DbCommon `bson:",inline"`
 
-	AccToken	string			`bson:"acc_token"`
-	Auth		bson.ObjectId		`bson:"auth,omitempty"`
+	AccToken string        `bson:"acc_token"`
+	Auth     bson.ObjectId `bson:"auth,omitempty"`
 
-	Compute		ComputeDb		`bson:"compute"`
+	Compute ComputeDb `bson:"compute"`
 }
 
-func (o *WebsockDb)ID() bson.ObjectId { return o.Id }
-func (o *WebsockDb)Location() *mongo.Location { return LocWebsock }
+func (o *WebsockDb) ID() bson.ObjectId         { return o.Id }
+func (o *WebsockDb) Location() *mongo.Location { return LocWebsock }
 
 type WsTrigDb struct {
-	Id		bson.ObjectId		`bson:"id"`
+	Id bson.ObjectId `bson:"id"`
 }
 
-func (ws *WebsockDb)DbKey() string {
+func (ws *WebsockDb) DbKey() string {
 	return "websock::" + ws.Id.Hex()
 }

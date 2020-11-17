@@ -32,12 +32,12 @@ import (
 )
 
 const (
-	StateInitializing	string = "init"
-	StateBuilding		string = "building"
-	StateReady		string = "ready"
-	StateDying		string = "dying"
-	StateBroken		string = "broken"
-	StateLost		string = "lost"
+	StateInitializing string = "init"
+	StateBuilding     string = "building"
+	StateReady        string = "ready"
+	StateDying        string = "dying"
+	StateBroken       string = "broken"
+	StateLost         string = "lost"
 )
 
 func DyingRq() bson.M {

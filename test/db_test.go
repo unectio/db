@@ -12,10 +12,11 @@ package main
 import (
 	"fmt"
 	"testing"
+
 	"github.com/unectio/db"
 )
 
-var valid = []string {
+var valid = []string{
 	"a_1z",
 	"аео", /* %) */
 	"_abc",
@@ -24,7 +25,7 @@ var valid = []string {
 	"функ_ция",
 }
 
-var invalid = []string {
+var invalid = []string{
 	"a-f",
 	"a/f",
 	"$abc",

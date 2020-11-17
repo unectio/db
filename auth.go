@@ -33,20 +33,20 @@ import (
 )
 
 type AuthMethodDb struct {
-	DbCommon				`bson:",inline"`
+	DbCommon `bson:",inline"`
 
-	JWT		*AuthJWTDb		`bson:"jwt,omitempty"`
-	Platform	bool			`bson:"platform,omitempty"`
+	JWT      *AuthJWTDb `bson:"jwt,omitempty"`
+	Platform bool       `bson:"platform,omitempty"`
 }
 
-func (am *AuthMethodDb)UpdateJWTQ() bson.M {
+func (am *AuthMethodDb) UpdateJWTQ() bson.M {
 	/* .JWT */
 	return bson.M{"jwt": am.JWT}
 }
 
-func (ac *AuthMethodDb)ID() bson.ObjectId { return ac.Id }
-func (ac *AuthMethodDb)Location() *mongo.Location { return LocAuthCtx }
+func (ac *AuthMethodDb) ID() bson.ObjectId         { return ac.Id }
+func (ac *AuthMethodDb) Location() *mongo.Location { return LocAuthCtx }
 
 type AuthJWTDb struct {
-	Key		[]byte			`bson:"key,omitempty"`	/* FIXME -- encrypt */
+	Key []byte `bson:"key,omitempty"` /* FIXME -- encrypt */
 }

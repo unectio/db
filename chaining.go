@@ -33,34 +33,34 @@ import (
 )
 
 type FnTargetDb struct {
-	DbCommon				`bson:",inline"`
+	DbCommon `bson:",inline"`
 
-	FnId		bson.ObjectId		`bson:"fnid"`
-	Fn		*NextFunctionDb		`bson:"function,omitempty"`
-	Rest		*NextRestDb		`bson:"rest,omitempty"`
-	Mware		*NextMwareDb		`bson:"mware,omitempty"`
+	FnId  bson.ObjectId   `bson:"fnid"`
+	Fn    *NextFunctionDb `bson:"function,omitempty"`
+	Rest  *NextRestDb     `bson:"rest,omitempty"`
+	Mware *NextMwareDb    `bson:"mware,omitempty"`
 
-	SuccFn		bson.ObjectId		`bson:"on_success"`
-	FailFn		bson.ObjectId		`bson:"on_failure"`
+	SuccFn bson.ObjectId `bson:"on_success"`
+	FailFn bson.ObjectId `bson:"on_failure"`
 }
 
-func (tg *FnTargetDb)ByFn(fnid bson.ObjectId) bson.M {
+func (tg *FnTargetDb) ByFn(fnid bson.ObjectId) bson.M {
 	/* .FnId */
 	return bson.M{"fnid": fnid}
 }
 
-func (tg *FnTargetDb)ID() bson.ObjectId { return tg.Id }
-func (tg *FnTargetDb)Location() *mongo.Location { return LocTarget }
+func (tg *FnTargetDb) ID() bson.ObjectId         { return tg.Id }
+func (tg *FnTargetDb) Location() *mongo.Location { return LocTarget }
 
 type NextFunctionDb struct {
-	FnId		bson.ObjectId		`bson:"fnid"`
+	FnId bson.ObjectId `bson:"fnid"`
 }
 
 type NextRestDb struct {
-	URL		string			`bson:"url"`
+	URL string `bson:"url"`
 }
 
 type NextMwareDb struct {
-	MwType		string			`bson:"type"`
-	MwId		bson.ObjectId		`bson:"id"`
+	MwType string        `bson:"type"`
+	MwId   bson.ObjectId `bson:"id"`
 }

@@ -29,14 +29,15 @@ package db
 
 import (
 	"context"
+
 	"github.com/unectio/util/mongo"
 	"gopkg.in/mgo.v2/bson"
 )
 
 type LQ struct {
-	q	bson.M
-	sort	string
-	limit	int
+	q     bson.M
+	sort  string
+	limit int
 }
 
 func ListQ(q bson.M) *LQ {
@@ -47,14 +48,14 @@ func ListQ(q bson.M) *LQ {
 	return &LQ{q: q}
 }
 
-func (lq *LQ)Page(since bson.ObjectId, lim int) *LQ {
+func (lq *LQ) Page(since bson.ObjectId, lim int) *LQ {
 	lq.q["_id"] = bson.M{"$gt": since}
 	lq.sort = "_id"
 	lq.limit = lim
 	return lq
 }
 
-func (lq *LQ)Tags(t []string) *LQ {
+func (lq *LQ) Tags(t []string) *LQ {
 	/*
 	 * Tags containining all the given values
 	 * without regard to order or other values in it
@@ -63,7 +64,7 @@ func (lq *LQ)Tags(t []string) *LQ {
 	return lq
 }
 
-func (lq *LQ)Q(ctx context.Context, loc *mongo.Location) mongo.Query {
+func (lq *LQ) Q(ctx context.Context, loc *mongo.Location) mongo.Query {
 	mq := MakeQuery(ctx, lq.q, loc)
 	if lq.sort != "" {
 		mq = mq.Sort(lq.sort)
@@ -74,6 +75,6 @@ func (lq *LQ)Q(ctx context.Context, loc *mongo.Location) mongo.Query {
 	return mq
 }
 
-func (lq *LQ)I(ctx context.Context, loc *mongo.Location) mongo.Iter {
+func (lq *LQ) I(ctx context.Context, loc *mongo.Location) mongo.Iter {
 	return lq.Q(ctx, loc).Iter()
 }

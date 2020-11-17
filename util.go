@@ -30,12 +30,13 @@ package db
 import (
 	"context"
 	"net/http"
+
 	"github.com/unectio/util"
+	sc "github.com/unectio/util/context"
 	"github.com/unectio/util/mongo"
 	"github.com/unectio/util/restmux"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	sc "github.com/unectio/util/context"
 )
 
 func Find(ctx context.Context, q bson.M, out DbObject) error {
@@ -89,14 +90,26 @@ func Add(ctx context.Context, o DbObject) error {
 func RestError(err error) restmux.Error {
 	if err == nil {
 		sc.Log("DB").Errorf("DB error tries to report nil")
-		return &restmux.GenError{http.StatusInternalServerError, "Error reporting error %) sorry"}
+		return &restmux.GenError{
+			Code:    http.StatusInternalServerError,
+			Message: "Error reporting error %) sorry",
+		}
 	} else if mongo.IsNotFound(err) {
-		return &restmux.GenError{http.StatusNotFound, "No such object"}
+		return &restmux.GenError{
+			Code:    http.StatusNotFound,
+			Message: "No such object",
+		}
 	} else if mongo.IsDup(err) {
-		return &restmux.GenError{http.StatusConflict, "Name already exists"}
+		return &restmux.GenError{
+			Code:    http.StatusConflict,
+			Message: "Name already exists",
+		}
 	} else {
 		sc.Log("DB").Errorf("DB connection (or query) error at %s: %s", util.Caller(), err.Error())
-		return &restmux.GenError{http.StatusInternalServerError, "Error querying database"}
+		return &restmux.GenError{
+			Code:    http.StatusInternalServerError,
+			Message: "Error querying database",
+		}
 	}
 }
 
@@ -117,18 +130,51 @@ func InitRealMongo(ctx context.Context, url string) error {
 func setupIndexes(s mongo.Session) error {
 	var err error
 
-	err = setupCookieIndex(s, LocFunc)	;if err != nil { return err }
-	err = setupCookieIndex(s, LocTrigger)	;if err != nil { return err }
-	err = setupCookieIndex(s, LocCode)	;if err != nil { return err }
-	err = setupCookieIndex(s, LocRepo)	;if err != nil { return err }
-	err = setupCookieIndex(s, LocRouter)	;if err != nil { return err }
-	err = setupCookieIndex(s, LocAuthCtx)	;if err != nil { return err }
-	err = setupCookieIndex(s, LocApps)	;if err != nil { return err }
-	err = setupCookieIndex(s, LocSecret)	;if err != nil { return err }
-	err = setupCookieIndex(s, LocWebsock)	;if err != nil { return err }
-	err = setupCookieIndex(s, LocMongo)	;if err != nil { return err }
+	err = setupCookieIndex(s, LocFunc)
+	if err != nil {
+		return err
+	}
+	err = setupCookieIndex(s, LocTrigger)
+	if err != nil {
+		return err
+	}
+	err = setupCookieIndex(s, LocCode)
+	if err != nil {
+		return err
+	}
+	err = setupCookieIndex(s, LocRepo)
+	if err != nil {
+		return err
+	}
+	err = setupCookieIndex(s, LocRouter)
+	if err != nil {
+		return err
+	}
+	err = setupCookieIndex(s, LocAuthCtx)
+	if err != nil {
+		return err
+	}
+	err = setupCookieIndex(s, LocApps)
+	if err != nil {
+		return err
+	}
+	err = setupCookieIndex(s, LocSecret)
+	if err != nil {
+		return err
+	}
+	err = setupCookieIndex(s, LocWebsock)
+	if err != nil {
+		return err
+	}
+	err = setupCookieIndex(s, LocMongo)
+	if err != nil {
+		return err
+	}
 
-	err = setupFieldIndex(s, LocTrigger, "key", false); if err != nil { return err }
+	err = setupFieldIndex(s, LocTrigger, "key", false)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -138,11 +184,11 @@ func setupCookieIndex(s mongo.Session, loc *mongo.Location) error {
 }
 
 func setupFieldIndex(s mongo.Session, loc *mongo.Location, field string, unique bool) error {
-	index := mgo.Index {
-		Unique:		unique,
-		Background:	true,
-		Sparse:		true,
-		Key:		[]string{ field },
+	index := mgo.Index{
+		Unique:     unique,
+		Background: true,
+		Sparse:     true,
+		Key:        []string{field},
 	}
 
 	return s.Collection(loc).EnsureIndex(&index)

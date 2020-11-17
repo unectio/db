@@ -30,23 +30,24 @@ package db
 import (
 	"errors"
 	"unicode"
+
 	"github.com/unectio/util"
 	"gopkg.in/mgo.v2/bson"
 )
 
 type Name struct {
-	Name		string		`bson:"name"`
-	ProjectRef	string		`bson:"project"`
+	Name       string `bson:"name"`
+	ProjectRef string `bson:"project"`
 	/*
 	 * Search by name (a.k.a. lookup) uses this field.
 	 * Field is indexed in setupIndexes
 	 */
-	Cookie		string		`bson:"cookie"`
+	Cookie string `bson:"cookie"`
 }
 
 const (
-	NameLenMax		int    = 64
-	SharedProject		string = "*"
+	NameLenMax    int    = 64
+	SharedProject string = "*"
 )
 
 func ValidName(n string) error {
@@ -63,10 +64,10 @@ func ValidName(n string) error {
 	 * unicode.L by it.
 	 */
 	for i, l := range n {
-		if !((l == '.' && i != 0 && i != len(n) - 1) ||
-				unicode.Is(unicode.Letter, l) ||
-				unicode.Is(unicode.Digit, l) ||
-				l == '_') {
+		if !((l == '.' && i != 0 && i != len(n)-1) ||
+			unicode.Is(unicode.Letter, l) ||
+			unicode.Is(unicode.Digit, l) ||
+			l == '_') {
 			return errors.New("Invalid character in name")
 		}
 	}
@@ -74,7 +75,7 @@ func ValidName(n string) error {
 	return nil
 }
 
-func (n *Name)Fill(projectRef, name, extra string) error {
+func (n *Name) Fill(projectRef, name, extra string) error {
 	err := ValidName(name)
 	if err != nil {
 		return errors.New("bad name value: " + err.Error())
@@ -87,11 +88,11 @@ func (n *Name)Fill(projectRef, name, extra string) error {
 	return nil
 }
 
-func (n *Name)Str() string {
+func (n *Name) Str() string {
 	return n.ProjectRef + "::" + n.Name
 }
 
-func (n *Name)Q() bson.M {
+func (n *Name) Q() bson.M {
 	q := Q()
 	q["cookie"] = n.Cookie
 	return q

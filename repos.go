@@ -29,24 +29,25 @@ package db
 
 import (
 	"time"
+
 	"github.com/unectio/util/mongo"
 	"gopkg.in/mgo.v2/bson"
 )
 
 type RepoDb struct {
-	DbCommon				`bson:",inline"`
+	DbCommon `bson:",inline"`
 
-	State		string			`bson:"state"`
-	Synced		time.Time		`bson:"synced"`
+	State  string    `bson:"state"`
+	Synced time.Time `bson:"synced"`
 
-	Sync		string			`bson:"sync"`
-	SyncDelayM	int			`bson:"sync_delay_m,omitempty"`
+	Sync       string `bson:"sync"`
+	SyncDelayM int    `bson:"sync_delay_m,omitempty"`
 
-	Type		string			`bson:"type"`
-	URL		string			`bson:"url"`
+	Type string `bson:"type"`
+	URL  string `bson:"url"`
 }
 
-func (rp *RepoDb)UpdateSyncedRq(q bson.M) bson.M {
+func (rp *RepoDb) UpdateSyncedRq(q bson.M) bson.M {
 	if q == nil {
 		q = bson.M{}
 	}
@@ -57,18 +58,18 @@ func (rp *RepoDb)UpdateSyncedRq(q bson.M) bson.M {
 	return q
 }
 
-func (rp *RepoDb)BySyncType(typ string) bson.M {
+func (rp *RepoDb) BySyncType(typ string) bson.M {
 	/* .Sync */
 	return bson.M{"sync": typ}
 }
 
-func (rp *RepoDb)ID() bson.ObjectId { return rp.Id }
-func (rp *RepoDb)Location() *mongo.Location { return LocRepo }
+func (rp *RepoDb) ID() bson.ObjectId         { return rp.Id }
+func (rp *RepoDb) Location() *mongo.Location { return LocRepo }
 
 const (
-	SyncTimer	= "timer"
+	SyncTimer = "timer"
 )
 
-func (rp *RepoDb)SyncDelay() time.Duration {
+func (rp *RepoDb) SyncDelay() time.Duration {
 	return time.Duration(rp.SyncDelayM) * time.Minute
 }

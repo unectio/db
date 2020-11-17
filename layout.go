@@ -33,62 +33,131 @@ import (
 )
 
 const (
-	StateDB string		= "faas_state"
-	FuncCol string		= "Functions"
-	TriggerCol string	= "Triggers"
-	TargetsCol string	= "Targets"
-	CodeCol string		= "Codes"
-	RepoCol string		= "Repositories"
-	RouterCol string	= "Routers"
-	ACtxCol string		= "AuthCtxs"
-	AppCol string		= "Applications"
-	SecretCol string	= "Secrets"
-	WebsockCol string	= "Websockets"
-	MongoCol string		= "Mongos"
+	StateDB    string = "faas_state"
+	FuncCol    string = "Functions"
+	TriggerCol string = "Triggers"
+	TargetsCol string = "Targets"
+	CodeCol    string = "Codes"
+	RepoCol    string = "Repositories"
+	RouterCol  string = "Routers"
+	ACtxCol    string = "AuthCtxs"
+	AppCol     string = "Applications"
+	SecretCol  string = "Secrets"
+	WebsockCol string = "Websockets"
+	MongoCol   string = "Mongos"
 
-	DataDB string		= "faas_data"
-	LogsCol string		= "Logs"
-	StatsCol string		= "FuncStats"
-	PStatsCol string	= "ProjectStats"
-	DeferEventCol string	= "DeferEvents"
+	DataDB        string = "faas_data"
+	LogsCol       string = "Logs"
+	StatsCol      string = "FuncStats"
+	PStatsCol     string = "ProjectStats"
+	DeferEventCol string = "DeferEvents"
 
-	AdminDB string		= "faas_admin"
-	UsersCol string		= "users"
-	KeysCol string		= "keys"
-	ProjectsCol string	= "projects"
-	RolesCol string		= "roles"
-	MwareCol string		= "mwares"
-	ClassesCol string	= "classes"
-	CapsCol string		= "caps"
-	EventSrcCol string	= "eventsources"
+	AdminDB     string = "faas_admin"
+	UsersCol    string = "users"
+	KeysCol     string = "keys"
+	ProjectsCol string = "projects"
+	RolesCol    string = "roles"
+	MwareCol    string = "mwares"
+	ClassesCol  string = "classes"
+	CapsCol     string = "caps"
+	EventSrcCol string = "eventsources"
 )
 
 var (
-	LocFunc		= &mongo.Location{StateDB, FuncCol}
-	LocTrigger	= &mongo.Location{StateDB, TriggerCol}
-	LocTarget	= &mongo.Location{StateDB, TargetsCol}
-	LocCode		= &mongo.Location{StateDB, CodeCol}
-	LocRepo		= &mongo.Location{StateDB, RepoCol}
-	LocRouter	= &mongo.Location{StateDB, RouterCol}
-	LocAuthCtx	= &mongo.Location{StateDB, ACtxCol}
-	LocApps		= &mongo.Location{StateDB, AppCol}
-	LocSecret	= &mongo.Location{StateDB, SecretCol}
-	LocWebsock	= &mongo.Location{StateDB, WebsockCol}
-	LocMongo	= &mongo.Location{StateDB, MongoCol}
+	LocFunc = &mongo.Location{
+		Db:  StateDB,
+		Col: FuncCol,
+	}
+	LocTrigger = &mongo.Location{
+		Db:  StateDB,
+		Col: TriggerCol,
+	}
+	LocTarget = &mongo.Location{
+		Db:  StateDB,
+		Col: TargetsCol,
+	}
+	LocCode = &mongo.Location{
+		Db:  StateDB,
+		Col: CodeCol,
+	}
+	LocRepo = &mongo.Location{
+		Db:  StateDB,
+		Col: RepoCol,
+	}
+	LocRouter = &mongo.Location{
+		Db:  StateDB,
+		Col: RouterCol,
+	}
+	LocAuthCtx = &mongo.Location{
+		Db:  StateDB,
+		Col: ACtxCol,
+	}
+	LocApps = &mongo.Location{
+		Db:  StateDB,
+		Col: AppCol,
+	}
+	LocSecret = &mongo.Location{
+		Db:  StateDB,
+		Col: SecretCol,
+	}
+	LocWebsock = &mongo.Location{
+		Db:  StateDB,
+		Col: WebsockCol,
+	}
+	LocMongo = &mongo.Location{
+		Db:  StateDB,
+		Col: MongoCol,
+	}
 
-	LocLogs		= &mongo.Location{DataDB, LogsCol}
-	LocStats	= &mongo.Location{DataDB, StatsCol}
-	LocPStats	= &mongo.Location{DataDB, PStatsCol}
-	LocDeferEvs	= &mongo.Location{DataDB, DeferEventCol}
+	LocLogs = &mongo.Location{
+		Db:  DataDB,
+		Col: LogsCol,
+	}
+	LocStats = &mongo.Location{
+		Db:  DataDB,
+		Col: StatsCol,
+	}
+	LocPStats = &mongo.Location{
+		Db:  DataDB,
+		Col: PStatsCol,
+	}
+	LocDeferEvs = &mongo.Location{
+		Db:  DataDB,
+		Col: DeferEventCol,
+	}
 
-	LocUsers	= &mongo.Location{AdminDB, UsersCol}
-	LocKeys		= &mongo.Location{AdminDB, KeysCol}
-	LocProjects	= &mongo.Location{AdminDB, ProjectsCol}
-	LocRoles	= &mongo.Location{AdminDB, RolesCol}
-	LocMwares	= &mongo.Location{AdminDB, MwareCol}
-	LocClasses	= &mongo.Location{AdminDB, ClassesCol}
-	LocCaps		= &mongo.Location{AdminDB, CapsCol}
-	LocEventSources	= &mongo.Location{AdminDB, EventSrcCol}
+	LocUsers = &mongo.Location{
+		Db:  AdminDB,
+		Col: UsersCol,
+	}
+	LocKeys = &mongo.Location{
+		Db:  AdminDB,
+		Col: KeysCol,
+	}
+	LocProjects = &mongo.Location{
+		Db:  AdminDB,
+		Col: ProjectsCol,
+	}
+	LocRoles = &mongo.Location{
+		Db:  AdminDB,
+		Col: RolesCol,
+	}
+	LocMwares = &mongo.Location{
+		Db:  AdminDB,
+		Col: MwareCol,
+	}
+	LocClasses = &mongo.Location{
+		Db:  AdminDB,
+		Col: ClassesCol,
+	}
+	LocCaps = &mongo.Location{
+		Db:  AdminDB,
+		Col: CapsCol,
+	}
+	LocEventSources = &mongo.Location{
+		Db:  AdminDB,
+		Col: EventSrcCol,
+	}
 )
 
 type DbObject interface {
@@ -101,12 +170,12 @@ func NewID() bson.ObjectId {
 }
 
 type DbCommon struct {
-	Id		bson.ObjectId		`bson:"_id,omitempty"`
-	Name					`bson:",inline"`
+	Id   bson.ObjectId `bson:"_id,omitempty"`
+	Name `bson:",inline"`
 	/*
 	 * Search by tags (db/list.go) uses this field, which
 	 * ... probably must be indexed too
 	 */
-	Tags		[]string		`bson:"tags,omitempty"`
-	UserData	string			`bson:"userdata,omitempty"`
+	Tags     []string `bson:"tags,omitempty"`
+	UserData string   `bson:"userdata,omitempty"`
 }
