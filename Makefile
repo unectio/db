@@ -9,4 +9,4 @@ install-test:
 	@(cd; GO111MODULE=on go get github.com/golangci/golangci-lint/cmd/golangci-lint@v$(GLOLANGCI_LINT_VERSION))
 
 lint:
-	$(GOPATH)/bin/golangci-lint run -v
+	golangci-lint run -v

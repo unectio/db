@@ -26,7 +26,8 @@ jobs:
     - name: Install dependencies
       run: |
         go mod download
-        ls -lisa $GOPATH/bin
+        ls -lisa $PWD/go/bin
+        export PATH=$PATH:$(go env GOPATH)/bin
         make install-test
 
     - name: Check the code
