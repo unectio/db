@@ -1,7 +1,7 @@
 GLOLANGCI_LINT_VERSION=1.30.0
 
 test: .FORCE
-	go test -v ./test/
+	go test -v ./...
 
 .PHONY: .FORCE
 
